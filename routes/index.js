@@ -34,7 +34,7 @@ router.post('/createme', function(req, res, next) {
   })
 });
 
-router.get('/createpoll', function(req, res, next) {
+router.post('/createpoll', function(req, res, next) {
   /*var values = {
     title: "Which drink do you like the most?",
     answers: [{text:'a1'}, {text:'a2'}, {text:'a3'}, {text:'a4'}]
