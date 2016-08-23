@@ -4,6 +4,7 @@ exports.up = function(knex, Promise) {
     table.string("email");
     table.string("first_name");
     table.string("password");
+    table.integer("points");
   });
 };
 
