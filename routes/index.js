@@ -34,4 +34,18 @@ router.post('/createme', function(req, res, next) {
   })
 });
 
+router.get('/createpoll', function(req, res, next) {
+  /*var values = {
+    title: "Which drink do you like the most?",
+    answers: [{text:'a1'}, {text:'a2'}, {text:'a3'}, {text:'a4'}]
+  }*/
+  queries.createPoll(req.body).then(function(pollid){
+    req.body.answers.forEach(function(answer){
+      answer.poll_id = pollid[0]
+      queries.createAnswer(answer).then(function(){
+        console.log("done");
+      })
+    })
+  })
+});
 module.exports = router;
