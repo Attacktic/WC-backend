@@ -1,5 +1,12 @@
 var knex = require('../db/knex');
-
+function getPollAnswers(poll_id){
+  return knex('polls').where("id", poll_id).first().then(function(poll){
+    return knex('poll_answers').whereIn("poll_id", poll_id).then(function(answers){
+      poll.answers = answers;
+      return poll;
+    })
+  })
+}
 module.exports = {
   getPass: function(email){
     return knex.raw(`select * from users where email='${email}'`)
@@ -15,5 +22,16 @@ module.exports = {
   },
   insertVote: function(data){
     return knex('poll_votes').insert({user_id: data.user_id})
+  },
+  getPolls: function(){
+    return knex('polls').pluck('id').then(function(ids){
+      var all = [];
+      ids.forEach(function(id){
+        all.push(getPollAnswers(id))
+      })
+      return Promise.all(all).then(function(polls) {
+        return polls;
+      });
+    })
   }
 }

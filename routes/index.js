@@ -21,9 +21,7 @@ router.post('/verify', function(req, res, next) {
 
 router.post('/createme', function(req, res, next) {
   queries.getPass(req.body.email).then(function(result){
-    console.log(req.body);
     req.body.pass = bcrypt.hashSync(req.body.pass, salt);
-    console.log(req.body);
     if (result.rows.length === 0){
       queries.createNew(req.body).then(function(){
         res.send("created user " + req.body.email)
@@ -35,17 +33,18 @@ router.post('/createme', function(req, res, next) {
 });
 
 router.post('/createpoll', function(req, res, next) {
-  /*var values = {
-    title: "Which drink do you like the most?",
-    answers: [{text:'a1'}, {text:'a2'}, {text:'a3'}, {text:'a4'}]
-  }*/
   queries.createPoll(req.body).then(function(pollid){
     req.body.answers.forEach(function(answer){
       answer.poll_id = pollid[0]
       queries.createAnswer(answer).then(function(){
-        console.log("done");
       })
     })
   })
 });
+
+router.get('/polls', function(req, res, next){
+  queries.getPolls().then(function(data){
+    res.json(data)
+  })
+})
 module.exports = router;
