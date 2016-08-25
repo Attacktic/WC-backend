@@ -33,5 +33,10 @@ module.exports = {
         return polls;
       });
     })
+  },
+  deletePoll: function(id){
+    return knex('polls').del().where({id: id}).then(function(){
+      return knex('poll_answers').del().where({poll_id: id})
+    })
   }
 }

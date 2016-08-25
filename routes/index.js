@@ -47,4 +47,10 @@ router.get('/polls', function(req, res, next){
     res.json(data)
   })
 })
+
+router.get('/polls/:id/delete', function(req, res, next){
+  queries.deletePoll(req.params.id).then(function(){
+    res.send("delete poll " + req.params.id)
+  })
+})
 module.exports = router;
