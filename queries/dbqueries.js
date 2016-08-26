@@ -38,5 +38,16 @@ module.exports = {
     return knex('polls').del().where({id: id}).then(function(){
       return knex('poll_answers').del().where({poll_id: id})
     })
+  },
+  getActivePolls: function(){
+    return knex('polls').where('active', true).pluck('id').then(function(ids){
+      var all = [];
+      ids.forEach(function(id){
+        all.push(getPollAnswers(id))
+      })
+      return Promise.all(all).then(function(polls) {
+        return polls;
+      });
+    })
   }
 }
