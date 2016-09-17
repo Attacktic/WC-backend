@@ -28,7 +28,6 @@ module.exports = {
       var all = [];
       ids.forEach(function(id){
         all.push(getPollAnswers(id))
-        all.splice(getPollAnswers(id)+1, 0);
       })
       return Promise.all(all).then(function(polls) {
         return polls;
