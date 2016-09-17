@@ -3,7 +3,6 @@ var router = express.Router();
 var queries = require('../queries/dbqueries');
 var bcrypt = require('bcrypt');
 var salt = bcrypt.genSaltSync(10);
-var cloudinary = require('cloudinary');
 
 router.post('/verify', function(req, res, next) {
   queries.getPass(req.body.email).then(function(result){
@@ -76,6 +75,24 @@ router.post('/polls/upload', function(req, res, next){
     console.log("IMG data? " + result);
     res.send("DONE? " + result)
   });
+})
+
+router.post('/polls/:id/questions/:question_id', function(req, res, next){
+  queries.addImgUrl(req.params.id).then(function(){
+    res.send("added img");
+  })
+})
+
+router.post('/users/votes/new', function(req, res, next){
+  queries.insertVote(req.body).then(function(){
+    res.send("created vote");
+  })
+})
+
+router.post('/user/data', function(req, res, next){
+  queries.getPass(req.body).then(function(data){
+    res.send(data);
+  })
 })
 
 module.exports = router;

@@ -6,7 +6,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
-var cloudinary = require('cloudinary');
 var routes = require('./routes/index');
 
 var app = express();

@@ -21,7 +21,15 @@ module.exports = {
     return knex('poll_answers').insert({answer: `${answer.text}`, poll_id: answer.poll_id})
   },
   insertVote: function(data){
-    return knex('poll_votes').insert({user_id: data.user_id})
+    return knex('poll_votes').insert({answer_id: data.answer_id, user_id: data.user_id}).then(function(){
+      return knex.raw(`select points from users where id=${data.user_id}`).then(function(data){
+        if (data.points == null){
+          return knex.raw(`update users set points = 1 where id=${data.user_id}`)
+        } else {
+          return knex.raw(`update users  set points = ${data.points+=1} where id=${data.user_id}`)
+        }
+      })
+    })
   },
   getPolls: function(){
     return knex('polls').pluck('id').then(function(ids){
@@ -63,5 +71,5 @@ module.exports = {
         'active': changeTo
       })
     })
-  },
+  }
 }

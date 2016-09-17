@@ -4,6 +4,7 @@ exports.up = function(knex, Promise) {
     table.increments();
     table.string("answer");
     table.integer("poll_id");
+    table.string("img_url");
   });
 };
 
