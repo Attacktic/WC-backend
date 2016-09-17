@@ -34,11 +34,16 @@ router.post('/createme', function(req, res, next) {
 
 router.post('/createpoll', function(req, res, next) {
   queries.createPoll(req.body).then(function(pollid){
+    console.log("worked fine");
     req.body.answers.forEach(function(answer){
+      console.log("still fine");
       answer.poll_id = pollid[0]
+      console.log("fine?");
       queries.createAnswer(answer).then(function(){
+        console.log("fine???");
       })
     })
+    res.send("done")
   })
 });
 
@@ -57,6 +62,12 @@ router.get('/polls/:id/delete', function(req, res, next){
 router.get('/polls/active', function(req, res, next){
   queries.getActivePolls().then(function(polls){
     res.json(polls)
+  })
+})
+
+router.get('/polls/:id/toggleActive', function(req, res, next){
+  queries.changeActive(req.params.id).then(function(){
+    res.send("done");
   })
 })
 

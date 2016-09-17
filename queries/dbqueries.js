@@ -28,6 +28,7 @@ module.exports = {
       var all = [];
       ids.forEach(function(id){
         all.push(getPollAnswers(id))
+        all.splice(getPollAnswers(id)+1, 0);
       })
       return Promise.all(all).then(function(polls) {
         return polls;
@@ -40,7 +41,7 @@ module.exports = {
     })
   },
   getActivePolls: function(){
-    return knex('polls').where('active', true).pluck('id').then(function(ids){
+    return knex('polls').where('active', 'true').pluck('id').then(function(ids){
       var all = [];
       ids.forEach(function(id){
         all.push(getPollAnswers(id))
@@ -49,5 +50,19 @@ module.exports = {
         return polls;
       });
     })
-  }
+  },
+  changeActive: function(id){
+    var changeTo = ''
+    return knex.raw(`select active from polls where id=${id}`).then(function(polls){
+      console.log(polls.rows[0].active)
+      if (polls.rows[0].active == "true"){
+        changeTo = "false";
+      } else {
+        changeTo = "true";
+      }
+      return knex('polls').where('id', id).update({
+        'active': changeTo
+      })
+    })
+  },
 }
