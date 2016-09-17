@@ -73,8 +73,8 @@ router.get('/polls/:id/toggleActive', function(req, res, next){
 })
 router.post('/polls/upload', function(req, res, next){
   cloudinary.uploader.upload(req.body.imgurl, function(result) {
-    console.log(result);
-    res.send(result)
+    console.log("IMG data? " + result);
+    res.send("DONE? " + result)
   });
 })
 
