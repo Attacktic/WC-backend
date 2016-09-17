@@ -3,6 +3,7 @@ var router = express.Router();
 var queries = require('../queries/dbqueries');
 var bcrypt = require('bcrypt');
 var salt = bcrypt.genSaltSync(10);
+var cloudinary = require('cloudinary');
 
 router.post('/verify', function(req, res, next) {
   queries.getPass(req.body.email).then(function(result){
@@ -69,6 +70,12 @@ router.get('/polls/:id/toggleActive', function(req, res, next){
   queries.changeActive(req.params.id).then(function(){
     res.send("done");
   })
+})
+router.get('/polls/upload/:imgurl', function(req, res, next){
+  cloudinary.uploader.upload(req.params.imgurl, function(result) {
+    console.log(result);
+    res.send(result)
+  });
 })
 
 module.exports = router;

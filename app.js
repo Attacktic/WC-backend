@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
-
+var cloudinary = require('cloudinary');
 var routes = require('./routes/index');
 
 var app = express();
@@ -56,5 +56,10 @@ app.use(function(err, req, res, next) {
   });
 });
 
+cloudinary.config({
+  cloud_name: 'sample',
+  api_key: '697339815437987',
+  api_secret: 'pKDevThTb7JO03EoMCXUYY5p8eE'
+});
 
 module.exports = app;
