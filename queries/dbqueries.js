@@ -31,7 +31,7 @@ module.exports = {
   },
   insertVote: function(data){
   return knex.raw(`select id from users where email='${data.username}'`).then(function(user){
-    console.log("userrrr " + user.rows, "dataaa "+ data);
+    console.log("userrrr " + user, "dataaa "+ data);
     return knex('poll_votes').insert({answer_id: data.answer_id, user_id: user.id}).then(function(){
       return knex.raw(`select points from users where id=${user.id}`).then(function(newdata){
         if (newdata.points == null){
