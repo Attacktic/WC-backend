@@ -73,7 +73,7 @@ module.exports = {
             })
           })
         })
-        return polls1;
+        return polls;
       });
     })
   },
