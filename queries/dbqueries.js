@@ -69,9 +69,6 @@ module.exports = {
           poll.answers.forEach(function(answer){
             allvotes.push(getAnswerVotes(answer.id))
           })
-          return Promise.all(allvotes).then(function(answers){
-            poll.answers = answers;
-          })
         })
         return polls;
       });
