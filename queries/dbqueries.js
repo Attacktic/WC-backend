@@ -8,7 +8,7 @@ function getPollAnswers(poll_id){
   })
 }
 function getAnswerVotes(answer_id){
-  return knex('answers').where("id", answer_id).first().then(function(answer){
+  return knex('poll_answers').where("id", answer_id).first().then(function(answer){
     return knex('poll_votes').whereIn("answer_id", answer_id).then(function(votes){
       console.log(votes);
       answer.votes = votes;
