@@ -5,7 +5,10 @@ function getPollAnswers(poll_id){
       answers.forEach(function(answer){
         return knex('poll_votes').whereIn("answer_id", answer.id).then(function(votes){
           answer.votes = votes;
+          console.log(answer.votes);
+          return answer;
         })
+        console.log(answer.votes);
       })
       poll.answers = answers;
       return poll;
