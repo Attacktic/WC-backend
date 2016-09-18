@@ -7,15 +7,14 @@ function getPollAnswers(poll_id){
     })
   })
 }
-/*function getAnswerVotes(answer_id){
+function getAnswerVotes(answer_id){
   return knex('answers').where("id", answer_id).first().then(function(answer){
     return knex('poll_votes').whereIn("answer_id", answer_id).then(function(votes){
-      console.log(votes);
       answer.votes = votes;
       return answer;
     })
   })
-}*/
+}
 module.exports = {
   getPass: function(email){
     return knex.raw(`select * from users where email='${email}'`)
@@ -61,17 +60,17 @@ module.exports = {
   getActivePolls: function(){
     return knex('polls').where('active', 'true').pluck('id').then(function(ids){
       var all = [];
+      var allvotes = [];
       ids.forEach(function(id){
         all.push(getPollAnswers(id))
       })
       return Promise.all(all).then(function(polls) {
-        var allvotes = [];
         polls.forEach(function(poll){
           poll.answers.forEach(function(answer){
-            console.log(answer.id);
-            //allvotes.push(getAnswerVotes(answer.id))
+            allvotes.push(getAnswerVotes(answer.id))
           })
         })
+        console.log(polls);
         return polls;
       });
     })
