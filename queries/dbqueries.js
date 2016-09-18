@@ -67,8 +67,11 @@ module.exports = {
       return Promise.all(all).then(function(polls) {
         var allvotes = [];
         polls.forEach(function(poll){
+          console.log("foreach1");
           poll.answers.forEach(function(answer){
+            console.log("foreach2");
             allvotes.push(getAnswerVotes(answer.id))
+            console.log("pushed " + allvotes);
             return Promise.all(allvotes).then(function(answers){
               poll.answers = answers;
               console.log(poll.answers);
