@@ -10,22 +10,12 @@ function getPollAnswers(poll_id){
         }))
       })
       return Promise.all(all).then(function(answers) {
-        console.log(answers);
         poll.answers = answers;
         return poll;
       });
     })
   })
 }
-/*function getAnswerVotes(answer_id){
-  return knex('poll_answers').where("id", answer_id).first().then(function(answer){
-    return knex('poll_votes').whereIn("answer_id", answer_id).then(function(votes){
-      answer.votes = votes;
-      console.log("got to votes");
-      return answer;
-    })
-  })
-}*/
 module.exports = {
   getPass: function(email){
     return knex.raw(`select * from users where email='${email}'`)
