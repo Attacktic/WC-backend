@@ -73,8 +73,9 @@ module.exports = {
             allvotes.push(getAnswerVotes(answer.id))
             console.log("pushed " + allvotes);
             return Promise.all(allvotes).then(function(answers){
+              console.log(answers);
               poll.answers = answers;
-              console.log(poll.answers);
+              return poll;
             })
           })
         })
