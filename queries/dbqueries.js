@@ -1,7 +1,7 @@
 var knex = require('../db/knex');
 function getPollAnswers(poll_id){
   return knex('polls').where("id", poll_id).first().then(function(poll){
-    return knex('poll_answers').whereIn("poll_id", poll_id).pluck(id).then(function(answers){
+    return knex('poll_answers').whereIn("poll_id", poll_id).then(function(answers){
       poll.answers = answers;
       return poll;
     })
@@ -60,17 +60,19 @@ module.exports = {
   getActivePolls: function(){
     return knex('polls').where('active', 'true').pluck('id').then(function(ids){
       var all = [];
-      var allvotes = [];
       ids.forEach(function(id){
         all.push(getPollAnswers(id))
       })
       return Promise.all(all).then(function(polls) {
+        var allvotes = [];
         polls.forEach(function(poll){
           poll.answers.forEach(function(answer){
             allvotes.push(getAnswerVotes(answer.id))
+            return Promise.all(allvotes).then(function(answers){
+              poll.answers = answers;
+            })
           })
         })
-        console.log(polls);
         return polls;
       });
     })
