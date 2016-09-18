@@ -73,11 +73,11 @@ module.exports = {
             allvotes.push(getAnswerVotes(answer.id))
             console.log("pushed " + allvotes);
           })
-        })
-        return Promise.all(allvotes).then(function(answers){
-          poll.answers = answers;
-          console.log(poll);
-          return poll;
+          return Promise.all(allvotes).then(function(answers){
+            poll.answers = answers;
+            console.log(poll);
+            return poll;
+          })
         })
       });
     })
