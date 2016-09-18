@@ -74,7 +74,7 @@ module.exports = {
           poll.answers = answers;
           return polls;
         })
-        //return polls;
+        return polls;
       });
     })
   },
