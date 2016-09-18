@@ -21,7 +21,7 @@ module.exports = {
     return knex.raw(`select * from users where email='${email}'`)
   },
   createNew: function(form){
-    return knex.raw(`insert into users values(default, '${form.pass}','${form.name}', '${form.email}')`)
+    return knex.raw(`insert into users values(default,'${form.email}', '${form.name}', '${form.pass}')`)
   },
   createPoll: function(data){
     return knex('polls').insert({title: `${data.title}`, active: `${data.active}`}).returning('id')
