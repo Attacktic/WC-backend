@@ -90,7 +90,7 @@ router.post('/users/votes/new', function(req, res, next){
 })
 
 router.post('/user/data', function(req, res, next){
-  queries.getPass(req.body).then(function(data){
+  queries.getPass(req.body.username).then(function(data){
     res.send(data);
   })
 })
