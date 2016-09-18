@@ -65,9 +65,10 @@ module.exports = {
       })
       return Promise.all(all).then(function(polls){
         polls.forEach(function(poll){
-          poll.answers.forEach(function(answer){
+          console.log(poll);
+          /*poll.answers.forEach(function(answer){
             console.log(answer.id);
-          })
+          })*/
         })
         console.log(polls);
         return polls;
