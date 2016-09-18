@@ -72,11 +72,11 @@ module.exports = {
             console.log("foreach2");
             allvotes.push(getAnswerVotes(answer.id))
             console.log("pushed " + allvotes);
-            return Promise.all(allvotes).then(function(answers){
-              console.log(answers);
-              poll.answers = answers;
-              return poll;
-            })
+          })
+          return Promise.all(allvotes).then(function(answers){
+            console.log(answers);
+            poll.answers = answers;
+            return poll;
           })
         })
         return polls;
