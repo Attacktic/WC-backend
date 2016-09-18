@@ -30,6 +30,7 @@ module.exports = {
     return knex('poll_answers').insert({answer: `${answer.text}`, poll_id: answer.poll_id})
   },
   insertVote: function(data){
+    console.log("username "+ data.username);
   return knex.raw(`select id from users where email='${data.username}'`).then(function(user){
     console.log(user);
     return knex('poll_votes').insert({answer_id: data.answer_id, user_id: user.id}).then(function(){
