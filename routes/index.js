@@ -34,13 +34,9 @@ router.post('/createme', function(req, res, next) {
 
 router.post('/createpoll', function(req, res, next) {
   queries.createPoll(req.body).then(function(pollid){
-    console.log("worked fine");
     req.body.answers.forEach(function(answer){
-      console.log("still fine");
       answer.poll_id = pollid[0]
-      console.log("fine?");
       queries.createAnswer(answer).then(function(){
-        console.log("fine???");
       })
     })
     res.send("done")
@@ -72,7 +68,7 @@ router.get('/polls/:id/toggleActive', function(req, res, next){
 })
 router.post('/polls/upload', function(req, res, next){
   cloudinary.uploader.upload(req.body.imgurl, function(result) {
-    console.log("IMG data? " + result);
+    //console.log("IMG data? " + result);
     res.send("DONE? " + result)
   });
 })
@@ -83,7 +79,7 @@ router.post('/polls/:id/questions/:question_id', function(req, res, next){
   })
 })
 
-router.post('/users/votes/new', function(req, res, next){
+router.post('/votes/new', function(req, res, next){
   queries.insertVote(req.body).then(function(){
     res.send("created vote");
   })

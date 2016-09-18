@@ -7,6 +7,14 @@ function getPollAnswers(poll_id){
     })
   })
 }
+function getAnswerVotes(answer_id){
+  return knex('answers').where("id", answer_id).first().then(function(answer){
+    return knex('poll_votes').whereIn("answer_id", answer_id).then(function(votes){
+      answer.votes = votes;
+      return answer;
+    })
+  })
+}
 module.exports = {
   getPass: function(email){
     return knex.raw(`select * from users where email='${email}'`)
@@ -21,7 +29,8 @@ module.exports = {
     return knex('poll_answers').insert({answer: `${answer.text}`, poll_id: answer.poll_id})
   },
   insertVote: function(data){
-    return knex('poll_votes').insert({answer_id: data.answer_id, user_id: data.user_id}).then(function(){
+  return knex.raw(`select id from users where email='${data.username}'`).then(function(user){
+    return knex('poll_votes').insert({answer_id: data.answer_id, user_id: user.id}).then(function(){
       return knex.raw(`select points from users where id=${data.user_id}`).then(function(data){
         if (data.points == null){
           return knex.raw(`update users set points = 1 where id=${data.user_id}`)
@@ -30,6 +39,7 @@ module.exports = {
         }
       })
     })
+  })
   },
   getPolls: function(){
     return knex('polls').pluck('id').then(function(ids){
@@ -37,7 +47,7 @@ module.exports = {
       ids.forEach(function(id){
         all.push(getPollAnswers(id))
       })
-      return Promise.all(all).then(function(polls) {
+      return Promise.all(all).then(function(polls){
         return polls;
       });
     })
@@ -53,7 +63,8 @@ module.exports = {
       ids.forEach(function(id){
         all.push(getPollAnswers(id))
       })
-      return Promise.all(all).then(function(polls) {
+      return Promise.all(all).then(function(polls){
+        console.log(polls);
         return polls;
       });
     })
