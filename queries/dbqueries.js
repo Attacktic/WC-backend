@@ -2,12 +2,17 @@ var knex = require('../db/knex');
 function getPollAnswers(poll_id){
   return knex('polls').where("id", poll_id).first().then(function(poll){
     return knex('poll_answers').whereIn("poll_id", poll_id).then(function(answers){
+      answers.forEach(function(answer){
+        return knex('poll_votes').whereIn("answer_id", answer.id).then(function(votes){
+          answer.votes = votes;
+        })
+      })
       poll.answers = answers;
       return poll;
     })
   })
 }
-function getAnswerVotes(answer_id){
+/*function getAnswerVotes(answer_id){
   return knex('poll_answers').where("id", answer_id).first().then(function(answer){
     return knex('poll_votes').whereIn("answer_id", answer_id).then(function(votes){
       answer.votes = votes;
@@ -15,7 +20,7 @@ function getAnswerVotes(answer_id){
       return answer;
     })
   })
-}
+}*/
 module.exports = {
   getPass: function(email){
     return knex.raw(`select * from users where email='${email}'`)
@@ -65,21 +70,7 @@ module.exports = {
         all.push(getPollAnswers(id))
       })
       return Promise.all(all).then(function(polls) {
-        var allvotes = [];
-        polls.forEach(function(poll){
-          console.log("foreach1");
-          poll.answers.forEach(function(answer){
-            console.log("foreach2");
-            allvotes.push(getAnswerVotes(answer.id))
-            console.log("pushed " + allvotes);
-          })
-          return Promise.all(allvotes).then(function(answers){
-            poll.answers = answers;
-            console.log(poll);
-            return poll;
-          })
-        })
-        return polls;
+        return polls
       });
     })
   },
