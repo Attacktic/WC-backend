@@ -32,13 +32,12 @@ module.exports = {
   insertVote: function(data){
     console.log("username "+ data.username.replace(/"/g,""));
   return knex.raw(`select id from users where email='${data.username.replace(/"/g,"")}'`).then(function(user){
-    console.log(user);
-    return knex('poll_votes').insert({answer_id: data.answer_id, user_id: user.id}).then(function(){
-      return knex.raw(`select points from users where id=${user.id}`).then(function(newdata){
+    return knex('poll_votes').insert({answer_id: data.answer_id, user_id: user.rows[0].id}).then(function(){
+      return knex.raw(`select points from users where id=${user.rows[0].id}`).then(function(newdata){
         if (newdata.points == null){
-          return knex.raw(`update users set points = 1 where id=${user.id}`)
+          return knex.raw(`update users set points = 1 where id=${user.rows[0].id}`)
         } else {
-          return knex.raw(`update users  set points = ${data.points+=1} where id=${user.id}`)
+          return knex.raw(`update users  set points = ${data.points+=1} where id=${user.rows[0].id}`)
         }
       })
     })
