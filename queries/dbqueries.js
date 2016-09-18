@@ -2,16 +2,18 @@ var knex = require('../db/knex');
 function getPollAnswers(poll_id){
   return knex('polls').where("id", poll_id).first().then(function(poll){
     return knex('poll_answers').whereIn("poll_id", poll_id).then(function(answers){
+      var all = [];
       answers.forEach(function(answer){
-        return knex('poll_votes').whereIn("answer_id", answer.id).then(function(votes){
+        all.push(knex('poll_votes').whereIn("answer_id", answer.id).then(function(votes){
           answer.votes = votes;
-          console.log("first " + answer.votes);
           return answer;
-        })
-        console.log("second " + answer.votes);
+        }))
       })
-      poll.answers = answers;
-      return poll;
+      return Promise.all(all).then(function(answers) {
+        console.log(answers);
+        poll.answers = answers;
+        return poll;
+      });
     })
   })
 }
