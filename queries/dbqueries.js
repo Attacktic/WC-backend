@@ -64,6 +64,16 @@ module.exports = {
         all.push(getPollAnswers(id))
       })
       return Promise.all(all).then(function(polls) {
+        var allvotes = [];
+        polls.forEach(function(poll){
+          poll.answers.forEach(function(answer){
+            allvotes.push(getAnswerVotes(answer.id))
+            return Promise.all(allvotes).then(function(answers){
+              poll.answers = answers;
+              console.log(poll.answers);
+            })
+          })
+        })
         return polls;
       });
     })
