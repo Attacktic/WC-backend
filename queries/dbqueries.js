@@ -7,7 +7,7 @@ function getPollAnswers(poll_id){
     })
   })
 }
-function getAnswerVotes(answer_id){
+/*function getAnswerVotes(answer_id){
   return knex('answers').where("id", answer_id).first().then(function(answer){
     return knex('poll_votes').whereIn("answer_id", answer_id).then(function(votes){
       console.log(votes);
@@ -15,7 +15,7 @@ function getAnswerVotes(answer_id){
       return answer;
     })
   })
-}
+}*/
 module.exports = {
   getPass: function(email){
     return knex.raw(`select * from users where email='${email}'`)
@@ -68,7 +68,8 @@ module.exports = {
         var allvotes = [];
         polls.forEach(function(poll){
           poll.answers.forEach(function(answer){
-            allvotes.push(getAnswerVotes(answer.id))
+            console.log(answer.id);
+            //allvotes.push(getAnswerVotes(answer.id))
           })
         })
         return polls;
