@@ -86,9 +86,13 @@ module.exports = {
   },
   resetVotes: function(pollid){
     return knex.raw(`select poll_votes.id from poll_votes join poll_answers on poll_votes.answer_id = poll_answers.id where poll_answers.poll_id=${pollid}`).then(function(ids){
+      var all = [];
       ids.rows.forEach(function(id){
-        knex.raw(`delete from poll_votes where id=${id.id}`)
+        all.push(knex.raw(`delete from poll_votes where id=${id.id}`))
       })
+      return Promise.all(all).then(function() {
+        return "done"
+      });
     })
   }
 }
