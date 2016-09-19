@@ -32,6 +32,12 @@ router.post('/createme', function(req, res, next) {
   })
 });
 
+router.get('/reset/:pollid', function(req, res, next){
+    queries.resetVotes(req.params.pollid).then(function(){
+      res.send("reset " + req.params.pollid);
+    })
+})
+
 router.post('/createpoll', function(req, res, next) {
   queries.createPoll(req.body).then(function(pollid){
     req.body.answers.forEach(function(answer){

@@ -83,5 +83,10 @@ module.exports = {
         'active': changeTo
       })
     })
-  }
+  },
+  resetVotes: function(pollid){
+    return knex.raw(`select poll_votes.id from poll_votes join poll_answers on poll_votes.answer_id = poll_answers.id where poll_answers.poll_id=${pollid}`).then(function(ids){
+      console.log(ids);
+    })
+  }//delete from poll_votes where id=
 }
