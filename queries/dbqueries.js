@@ -27,7 +27,7 @@ module.exports = {
     return knex('polls').insert({title: `${data.title}`, active: `${data.active}`}).returning('id')
   },
   createAnswer: function(answer){
-    return knex('poll_answers').insert({answer: `${answer.text}`, poll_id: answer.poll_id})
+    return knex('poll_answers').insert({answer: `${answer.text}`, poll_id: answer.poll_id, img: `${answer.img}`})
   },
   insertVote: function(data){
   return knex.raw(`select id from users where email='${data.username.replace(/"/g,"")}'`).then(function(user){
