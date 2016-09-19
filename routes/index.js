@@ -92,6 +92,7 @@ router.post('/votes/new', function(req, res, next){
 })
 
 router.post('/user/data', function(req, res, next){
+  req.body.username = req.body.username.replace(/"/g,"");
   queries.getPass(req.body.username).then(function(data){
     res.send(data);
   })
