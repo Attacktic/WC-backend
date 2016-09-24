@@ -109,7 +109,6 @@ module.exports = {
         all.push(knex.raw(`select first_name, email from users where id=${id.user_id}`))
       })
       return Promise.all(all).then(function(users){
-        console.log(users);
         return users;
       })
     })
