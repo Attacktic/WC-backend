@@ -74,7 +74,6 @@ router.get('/polls/:id/toggleActive', function(req, res, next){
 })
 router.post('/polls/upload', function(req, res, next){
   cloudinary.uploader.upload(req.body.imgurl, function(result) {
-    //console.log("IMG data? " + result);
     res.send("DONE? " + result)
   });
 })
@@ -100,7 +99,7 @@ router.post('/user/data', function(req, res, next){
 router.get('/weekvotes', function(req, res, next){
   queries.weekVotes().then(function(data){
     for (var i in data){
-      console.log(data[i]);
+      console.log(data[i].rows);
     }
     res.send(data.rows);
   })
