@@ -103,7 +103,7 @@ module.exports = {
       return [new Date(d.setDate(diff)),new Date(d.setDate(adiff))] ;
     }
 
-    return knex.raw(`select user_id from poll_votes where created BETWEEN ${getMonday(new Date())[0]} AND ${getMonday(new Date())[1]}'`).then(function(ids){
+    return knex.raw(`select user_id from poll_votes where created BETWEEN '${getMonday(new Date())[0]}' AND '${getMonday(new Date())[1]}'`).then(function(ids){
       var all = [];
       ids.rows.forEach(function(id){
         all.push(knex.raw(`select first_name, email from users where id=${id}`))
