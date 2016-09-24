@@ -99,7 +99,9 @@ router.post('/user/data', function(req, res, next){
 
 router.get('/weekvotes', function(req, res, next){
   queries.weekVotes().then(function(data){
-    console.log(data.rows);
+    for (var i in data){
+      console.log(data[i]);
+    }
     res.send(data.rows);
   })
 })
