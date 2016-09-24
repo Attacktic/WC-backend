@@ -106,10 +106,10 @@ module.exports = {
     return knex.raw(`select user_id from poll_votes where created BETWEEN '${getMonday(new Date())[0].toISOString().slice(0, 19).replace('T', ' ')}' AND '${getMonday(new Date())[1].toISOString().slice(0, 19).replace('T', ' ')}'`).then(function(ids){
       var all = [];
       ids.rows.forEach(function(id){
-        console.log(id.user_id);
         all.push(knex.raw(`select first_name, email from users where id=${id.user_id}`))
       })
       return Promise.all(all).then(function(users){
+        console.log(users);
         return users;
       })
     })
