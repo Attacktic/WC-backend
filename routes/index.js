@@ -99,7 +99,7 @@ router.post('/user/data', function(req, res, next){
 router.get('/weekvotes', function(req, res, next){
   queries.weekVotes().then(function(data){
     if (data[0]){
-      var users = data[0].rows;
+      var users = [];
       for (var i in data){
         users.push(data[i].rows[0])
       }
