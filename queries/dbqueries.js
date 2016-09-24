@@ -33,7 +33,6 @@ module.exports = {
   return knex.raw(`select id from users where email='${data.username.replace(/"/g,"")}'`).then(function(user){
     return knex('poll_votes').insert({answer_id: data.answer_id, user_id: user.rows[0].id}).then(function(){
       return knex.raw(`select points from users where id=${user.rows[0].id}`).then(function(newdata){
-        console.log(typeof(newdata.rows[0].points));
         if (newdata.rows[0].points == null){
           return knex.raw(`update users set points = 1 where id=${user.rows[0].id}`)
         } else {
@@ -94,5 +93,25 @@ module.exports = {
         return "done"
       });
     })
+  },
+  weekVotes: function(){
+    function getMonday(d) {
+      d = new Date(d);
+      var day = d.getDay()
+      var diff = d.getDate() - day + (day == 0 ? -6:1);
+      var adiff = d.getDate() + (7-day) + (day == 0 ? -6:1);
+      return [new Date(d.setDate(diff)),new Date(d.setDate(adiff))] ;
+    }
+
+    return knex.raw(`select user_id from poll_votes where created BETWEEN ${getMonday(new Date())[0]} AND ${getMonday(new Date())[1]}'`).then(function(ids){
+      var all = [];
+      ids.rows.forEach(function(id){
+        all.push(knex.raw(`select first_name, email from users where id=${id}`))
+      })
+      return Promise.all(all).then(function(users){
+        return users;
+      })
+    })
+    //select * from poll_votes where created BETWEEN '2016-09-20 00:00:01' AND '2016-09-25 23:59:59';
   }
 }

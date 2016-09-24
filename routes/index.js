@@ -92,9 +92,14 @@ router.post('/votes/new', function(req, res, next){
 })
 
 router.post('/user/data', function(req, res, next){
-  console.log(req.body);
   queries.getPass(req.body.username).then(function(data){
     res.send(data);
+  })
+})
+
+router.get('/weekvotes', function(req, res, next){
+  queries.weekVotes().then(function(data){
+    res.send(data.rows);
   })
 })
 
