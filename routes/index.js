@@ -98,7 +98,12 @@ router.post('/user/data', function(req, res, next){
 
 router.get('/weekvotes', function(req, res, next){
   queries.weekVotes().then(function(data){
-    res.send(data[0].rows);
+    var users = [];
+    for (var i in data){
+      console.log(data[i].rows);
+      users.push(data[i].rows)
+    }
+    res.send(users);
   })
 })
 
